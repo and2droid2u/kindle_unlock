@@ -1,0 +1,6 @@
+1. Root device ( for dd )
+2. dd aboot, recovery
+3. Reboot to bootloader and unlock.
+4. Reboot to recovery and install ROM/opengapps (pico)
+5. Disable/Remove unused apps/services
+6. Enjoy!
