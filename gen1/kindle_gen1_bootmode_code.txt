@@ -1,0 +1,6 @@
+Normal mode:
+fastboot -i 0x1949 oem idme bootmode 4000
+Recovery mode:
+fastboot -i 0x1949 oem idme bootmode 5001
+Fastboot:
+fastboot -i 0x1949 oem idme bootmode 4002
