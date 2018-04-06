@@ -1,0 +1,52 @@
+Steps unlock bootloader and needed files
+this is the details step for unlocking bootloader for the 2013 Kindle HDX 7 (Thor) and HDX 8.9 (Apollo). Be carefull the 2014 HDX 8.9 (Saturn) doesn't work!
+These steps are done in Windows 10, successfully checked by myself! 
+I don't take any credits, just collect all the steps in one post of the whole process.
+
+Download the needed files are in the attachment, just download them all + the TWRP for your device from this thread: TWRP 3.1.1-1
+You do NOT need root for these steps!
+
+1. Install the adb-setup-1.4.3 into a folder (for example: C:/adb), extract dd-0.5.zip + unlock.zip + aboot-xxx.zip, put dd.exe + get_code.bat + unlock.bat + twrp image (for your device) + aboot_vuln.mbn (for your device) into that folder. After that install the kindle_fire_usb_driver.
+
+2. Turn on ADB-Debuging Mode in Developer Mod by tapping 7 times the build numbers in settings and connect to your computer + trust your device.
+
+3. Execute "get_code.bat" in the folder above, you will get a new file: unlock.code in the folder.
+
+4. Open CMD in the folder and run "adb reboot bootloader", the Kindle will reboot to bootloader with "[ fastboot ]" on the display
+
+5. On the Computer go to Device-Manager and change driver in "Other Android" to "Fire Devices - Android Adb Composite Driver" . It should say "Ready" on the Kindle.
+
+6. Now we need to enter Bulk-Mode like the instruction in this thread: Bulk Mode
+
+fastboot -i 0x1949 erase aboot
+fastboot -i 0x1949 reboot
+IMPORTANT:
+This will be scary as you'll lose 'fastboot' and only see a black screen.
+Your device should reboot into "bulk mode" resulting in a number of pop-up
+windows asking to format all the partitions that get exposed (at least, on Windows 10).
+
+DO NOT format anything! Follow the above instructions instead.
+
+7. Open a command window (cmd) and run the following commands:
+
+wmic partition where index=22 get diskindex
+wmic partition where (index=17 and numberofblocks=20480) get diskindex
+wmic partition where (index=5 and numberofblocks=4096) get diskindex
+All three of the above commands should return the same DiskIndex. Let's call that index X.
+
+8. In the command window, run the following two commands with the right aboot&twrp files for your device
+(you will need to substitute the DiskIndex X from above in place of the X):
+
+dd of=\\?\Device\HarddiskX\Partition6 if=aboot_vuln.mbn
+dd of=\\?\Device\HarddiskX\Partition18 if=twrp_cubed.img
+
+This error message on the first command seems normal: "Error reading file: 87 The parameter is incorrect"
+NB: make sure you run both commands! Without TWRP, you'll get a brick.
+
+Wait a few minutes for good measure; then, keep holding Power + VolUp until your device enters TWRP.
+
+9. When done, hold down the power button until it reboots. Now you will be at Bootloader with [Fastboot] sign on the screen. Change the drive in Device-Manager again if needed.
+
+10. Run the "unlock.bat" in the folder and you should get a green line: "unlock code is correct". Congrats your Kindle now has an unlocked bootloader.
+
+11. Now hold power button again to shut down the device, then hold both "power button + Volume UP" and keep them for 3-5 seconds after you see the "kindle fire" logo. Then you will get into the TWRP and flash your desire things.
